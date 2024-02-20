@@ -49,7 +49,7 @@ autocomplete="off"><br>
             const form = document.forms["draw-form"];
             form.addEventListener("submit", e => {
                 e.preventDefault();
-                let start = new Date("2000-01-01 " + 
+                let start = new Date("Jan 1, 1970 " + 
 form.elements["start"].value);
                 let interval = form.elements["interval"].value;
                 for (let n = 1; n <= 8; n++) {
