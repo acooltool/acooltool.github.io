@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>nsda point calculator</title>
+        <style>
+            body {
+                color: white;
+                background: black;
+            }
+            a {
+                color: pink;
+            }
+            table {
+                border-spacing: 0;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 2px white solid;
+            }
+            input {
+                border: none;
+                background: black;
+                color: white;
+            }
+            select, .dark {
+                background: grey;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>nsda point calculator</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>points</th>
+                    <th>main event</th>
+                    <th>ranks</th>
+                    <th>remove</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">GRAND TOTAL: <b id="total">0</b></td>
+                </tr>
+            </tfoot>
+        </table>
+        <button id="add">add</button>
+        <script>
+            const tbody = document.querySelector("tbody");
+            const total = document.querySelector("#total");
+
+            document.querySelector("#add").addEventListener("click", e => {
+                let tr = document.createElement("tr");
+                let ptd = Object.assign(document.createElement("td"), {innerText: "0"});
+                let metd = document.createElement("td");
+                let ranktd = document.createElement("td");
+                let remtd = document.createElement("td");
+                ptd.innerText = 0;
+                let mesel = document.createElement("select");
+                mesel.append(Object.assign(document.createElement("option"), {value: "1", innerText: "main (ex spk, oo, info, humor, drama, duo, poi)"}), Object.assign(document.createElement("option"), {value: "0", innerText: "non-main (any category not in main)"}), Object.assign(document.createElement("option"), {value: "-2", innerText: "junior varsity (regardless of category)"}));
+                metd.append(mesel);
+                let rankinput = Object.assign(document.createElement("input"), {placeholder: "ex. 5, 3, 2, 7, 7, 5"});
+                ranktd.appendChild(rankinput);
+                let rembtn = Object.assign(document.createElement("button"), {innerText: "remove", className: "dark"});
+                remtd.appendChild(rembtn);
+                let update = () => {
+                    let old = ptd.innerText*1;
+                    let acc = 0;
+                    for (const rank of rankinput.value.split(/[^0-9]/)) {
+                        if (rank == 0) continue;
+                        acc += 6 + mesel.value*1 - Math.min((mesel.value>=0 ? 5 : 3), rank);
+                    };
+                    ptd.innerText = acc;
+                    total.innerText = total.innerText - (old - acc);
+                };
+                rembtn.addEventListener("click", e => {
+                    rembtn.parentElement.parentElement.remove();
+                    update()
+                });
+                rankinput.addEventListener("input", update);
+                mesel.addEventListener("change", update);
+                tr.append(ptd, metd, ranktd, remtd);
+                tbody.appendChild(tr);
+            });
+        </script>
+    </body>
+</html>
