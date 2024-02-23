@@ -77,7 +77,7 @@
                 };
                 rembtn.addEventListener("click", e => {
                     rembtn.parentElement.parentElement.remove();
-                    update()
+                    total.innerText = total.innerText - ptd.innerText*1;
                 });
                 rankinput.addEventListener("input", update);
                 mesel.addEventListener("change", update);
