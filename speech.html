@@ -55,29 +55,21 @@
                 for (const [id, info] of Object.entries(data)) {
                     if (info["n"].toLowerCase().includes(query)) {
                         let row = document.createElement("tr");
-                        let idtd = document.createElement("td");
+                        let idtd = Object.assign(document.createElement("td"), {innerText: id});
                         let comptd = document.createElement("td");
                         let ssntd = document.createElement("td");
-                        idtd.innerText = id;
-                        let compa = document.createElement("a");
-                        compa.target = "_blank";
-                        compa.href = `https://postings.speechwire.com/r-comp.php?compid=${id}&seasonid=${info["a"][0]}`;
-                        compa.innerText = info["n"];
+                        let compa = Object.assign(document.createElement("a"), {target: "_blank", href: `https://postings.speechwire.com/r-comp.php?compid=${id}&seasonid=${info["a"][0]}`, innerText: info["n"]});
                         comptd.appendChild(compa);
                         let ssnsel = document.createElement("select");
                         ssnsel.addEventListener("change", e => {
                             compa.href = `https://postings.speechwire.com/r-comp.php?compid=${id}&seasonid=${e.target.value}`;
                         });
                         for (const ssn of info["a"]) {
-                            let ssnopt = document.createElement("option");
-                            ssnopt.value = ssn;
-                            ssnopt.innerText = `${ssn+2007}-${ssn+2008}`;
+                            let ssnopt = Object.assign(document.createElement("option"), {value: ssn, innerText: `${ssn+2007}-${ssn+2008}`});
                             ssnsel.appendChild(ssnopt);
                         }
                         ssntd.appendChild(ssnsel);
-                        row.appendChild(idtd);
-                        row.appendChild(comptd);
-                        row.appendChild(ssntd);
+                        row.append(idtd, comptd, ssntd);
                         tbody.appendChild(row);
                     }
                 }
